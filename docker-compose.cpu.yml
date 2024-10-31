@@ -23,7 +23,7 @@ services:
     environment:
       - ENV=production
     ports:
-      - "8080:8080"
+      - "8092:8092"
     volumes:
       - .:/app
     depends_on:
