@@ -19,7 +19,7 @@ services:
   app:
     container_name: marker-api-cpu
     image: marker-api-cpu-image 
-    command: python distributed_server.py --host 0.0.0.0 --port 8080
+    command: python distributed_server.py --host 0.0.0.0 --port 8092
     environment:
       - ENV=production
     ports:
