@@ -7,15 +7,18 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
+# Upgrade pip to the latest version
+RUN pip install --no-cache-dir --upgrade pip
+
 # Set the working directory
 WORKDIR /app
 
 # Copy the project files into the Docker image
 COPY . .
 
-# Install Python dependencies, including surya and transformers
+# Install Python dependencies
 RUN pip install --no-cache-dir -e . \
-    && pip install --no-cache-dir --upgrade surya transformers
+    && pip install --no-cache-dir --upgrade transformers
 
 # Ensure that the Python path is set correctly
 ENV PYTHONPATH="${PYTHONPATH}:/app"
@@ -28,4 +31,3 @@ EXPOSE 8092
 
 # Command to run the application
 CMD ["python", "server.py", "--host", "0.0.0.0", "--port", "8092"]
-
