@@ -3,18 +3,17 @@ version: "3.8"
 services:
   celery_worker:
     build:
-      context: .  # Keep the build context as the root directory
-      dockerfile: docker/Dockerfile.cpu.server  # Specify the new path to the CPU Dockerfile
+      context: .
+      dockerfile: docker/Dockerfile.cpu.server
     image: marker-api-cpu-image
     command: celery -A marker_api.celery_worker.celery_app worker --pool=solo -n worker_primary --loglevel=info
     volumes:
       - .:/app
     environment:
       - REDIS_HOST=${REDIS_HOST}
-    links:
-      - redis
     depends_on:
       - redis
+    restart: unless-stopped
 
   app:
     container_name: marker-api-cpu
@@ -29,13 +28,14 @@ services:
     depends_on:
       - redis
       - celery_worker
+    restart: unless-stopped
 
   redis:
     container_name: redis
     image: redis:7.2.4-alpine
     ports:
       - "6379:6379"
-
+    restart: unless-stopped
 
   flower:
     container_name: flower_cpu
@@ -51,3 +51,4 @@ services:
       - app
       - redis
       - celery_worker
+    restart: unless-stopped
