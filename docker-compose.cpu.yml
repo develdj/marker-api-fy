@@ -4,7 +4,7 @@ services:
   celery_worker:
     build:
       context: .  # Keep the build context as the root directory
-      dockerfile: docker/Dockerfile.cpu.distributed-server  # Specify the new path to the CPU Dockerfile
+      dockerfile: docker/Dockerfile.cpu.server  # Specify the new path to the CPU Dockerfile
     image: marker-api-cpu-image
     command: celery -A marker_api.celery_worker.celery_app worker --pool=solo -n worker_primary --loglevel=info
     volumes:
