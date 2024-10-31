@@ -1,7 +1,7 @@
 # Use a base image with Python for ARM64 architecture
 FROM --platform=linux/arm64 python:3.11-slim
 
-# Install system dependencies required for libGL and other essentials
+# Install system dependencies required for libGL
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -16,11 +16,12 @@ COPY . .
 # Install Python dependencies
 RUN pip install --no-cache-dir -e .
 
-# Preload models if necessary
+# Ensure that the Python path is set correctly
+ENV PYTHONPATH="${PYTHONPATH}:/app"
+
+# Test loading models (you may want to remove this after debugging)
 RUN python -c 'from marker.models import load_all_models; load_all_models()'
 
-# Expose the application port
 EXPOSE 8092
 
-# Define the command to run the application
 CMD ["python", "server.py", "--host", "0.0.0.0", "--port", "8092"]
