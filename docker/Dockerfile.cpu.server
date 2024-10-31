@@ -18,6 +18,6 @@ RUN pip install -e .
 
 RUN python -c 'from marker.models import load_all_models; load_all_models()'
 
-EXPOSE 8080
+EXPOSE 8092
 
 CMD ["python", "server.py", "--host", "0.0.0.0", "--port", "8092"]
